@@ -26,9 +26,11 @@ public class BudgetReport {
     private static List<Budget> getTargetBudgets(LocalDate start, LocalDate end, List<Budget> budgets) {
         List<Budget> budgetList = new ArrayList<>();
         for (Budget budget: budgets){
-            if (budget.getMonth().getYear() == start.getYear()
-                    && budget.getMonth().getMonthValue() >= start.getMonthValue()
-                    && budget.getMonth().getMonthValue() <= end.getMonthValue()){
+            if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1))
+                    || budget.getMonth().atDay(1).isAfter(start.withDayOfMonth(1))
+                    && budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))
+                    || budget.getMonth().atDay(1).isBefore(end.withDayOfMonth(1))
+            ){
                 budgetList.add(budget);
             }
         }
