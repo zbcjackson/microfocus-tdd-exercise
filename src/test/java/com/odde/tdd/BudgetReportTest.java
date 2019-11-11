@@ -46,7 +46,18 @@ public class BudgetReportTest {
     @Test
     public void query_out_of_budget() {
         givenBudgets(new Budget(YearMonth.of(2018, 12), 3100));
-        assertEquals(0, BudgetReport.totalBudget(LocalDate.parse("2018-01-05"), LocalDate.parse("2019-01-10"), repo.findAll()));
+        assertEquals(0, BudgetReport.totalBudget(LocalDate.parse("2019-01-05"), LocalDate.parse("2019-01-10"), repo.findAll()));
+    }
+
+    @Test
+    public void query_across_years() {
+        givenBudgets(
+                new Budget(YearMonth.of(2017, 12), 3100),
+                new Budget(YearMonth.of(2018, 1), 3100),
+                new Budget(YearMonth.of(2018, 12), 3100),
+                new Budget(YearMonth.of(2019, 1), 3100)
+        );
+        assertEquals(2700+3100+3100+1000, BudgetReport.totalBudget(LocalDate.parse("2017-12-05"), LocalDate.parse("2019-01-10"), repo.findAll()));
     }
 
     @Test
