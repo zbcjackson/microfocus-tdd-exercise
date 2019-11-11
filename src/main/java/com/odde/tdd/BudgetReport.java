@@ -17,7 +17,7 @@ public class BudgetReport {
                 total += (start.lengthOfMonth() - start.getDayOfMonth() + 1)* budget.getAmount()/start.lengthOfMonth() ;
             }else if (month == end.getMonthValue()){
                 total += (end.getDayOfMonth()) * budget.getAmount()/end.lengthOfMonth() ;
-            }else {
+            }else if (month > start.getMonthValue() && month < end.getMonthValue()) {
                 total += budget.getAmount();
             }
         }
