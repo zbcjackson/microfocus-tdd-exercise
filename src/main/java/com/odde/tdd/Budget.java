@@ -10,14 +10,8 @@ public class Budget {
         this.month = month;
         this.amount = amount;
     }
-    public YearMonth getMonth(){
-        return month;
-    }
-    public long getAmount(){
-        return amount;
-    }
 
-    Period getPeriod() {
+    private Period getPeriod() {
         return new Period(month.atDay(1), month.atEndOfMonth());
     }
 

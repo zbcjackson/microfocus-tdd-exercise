@@ -11,15 +11,7 @@ public class Period {
         this.end = end;
     }
 
-    public LocalDate getStart() {
-        return start;
-    }
-
-    public LocalDate getEnd() {
-        return end;
-    }
-
-    int getDayCount() {
+    private int getDayCount() {
         return start.isAfter(end) ? 0 : end.getDayOfMonth() - start.getDayOfMonth() + 1;
     }
 
