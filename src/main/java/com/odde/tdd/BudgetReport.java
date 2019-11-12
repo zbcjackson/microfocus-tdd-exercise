@@ -5,8 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BudgetReport {
-    public static long totalBudget(LocalDate start, LocalDate end, List<Budget> budgets)
+    private final BudgetRepo repo;
+
+    public BudgetReport(BudgetRepo repo) {
+
+        this.repo = repo;
+    }
+
+    public long totalBudget(LocalDate start, LocalDate end)
     {
+        List<Budget> budgets = repo.findAll();
         List<Budget> budgetList = getTargetBudgets(start, end, budgets);
         long total = 0;
         for (Budget budget: budgetList){
@@ -22,7 +30,7 @@ public class BudgetReport {
         }
         return total;
     }
-    private static List<Budget> getTargetBudgets(LocalDate start, LocalDate end, List<Budget> budgets) {
+    private List<Budget> getTargetBudgets(LocalDate start, LocalDate end, List<Budget> budgets) {
         List<Budget> budgetList = new ArrayList<>();
         for (Budget budget: budgets){
             if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1))
