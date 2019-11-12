@@ -17,15 +17,23 @@ public class BudgetReport {
         List<Budget> budgetList = getTargetBudgets(start, end);
         long total = 0;
         for (Budget budget: budgetList){
+            LocalDate start1 = LocalDate.now();
+            LocalDate end1 = LocalDate.now().minusDays(1);
             if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1)) && budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))) {
-                total += (end.getDayOfMonth() - start.getDayOfMonth() + 1) * budget.getAmount()/start.lengthOfMonth();
+                end1 = end;
+                start1 = start;
             }else if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1))){
-                total += (start.lengthOfMonth() - start.getDayOfMonth() + 1)* budget.getAmount()/start.lengthOfMonth() ;
+                end1 = budget.getMonth().atEndOfMonth();
+                start1 = start;
             }else if (budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))){
-                total += (end.getDayOfMonth()) * budget.getAmount()/end.lengthOfMonth() ;
+                start1 = budget.getMonth().atDay(1);
+                end1 = end;
             }else if (budget.getMonth().atDay(1).isAfter(start.withDayOfMonth(1)) && budget.getMonth().atDay(1).isBefore(end.withDayOfMonth(1))) {
-                total += budget.getAmount();
+                end1 = budget.getMonth().atEndOfMonth();
+                start1 = budget.getMonth().atDay(1);
             }
+            int dayCount = end1.getDayOfMonth() - start1.getDayOfMonth() + 1;
+            total += dayCount * budget.getAmount() / budget.getMonth().lengthOfMonth();
         }
         return total;
     }
