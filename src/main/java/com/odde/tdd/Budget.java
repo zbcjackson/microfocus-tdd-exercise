@@ -20,4 +20,8 @@ public class Budget {
     Period getPeriod() {
         return new Period(month.atDay(1), month.atEndOfMonth());
     }
+
+    long getOverlappingAmount(Period period) {
+        return period.getOverlappingDayCount(getPeriod()) * amount / month.lengthOfMonth();
+    }
 }
