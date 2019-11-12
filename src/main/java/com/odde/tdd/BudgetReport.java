@@ -17,12 +17,16 @@ public class BudgetReport {
         List<Budget> budgetList = getTargetBudgets(period.getStart(), period.getEnd());
         long total = 0;
         for (Budget budget: budgetList){
-            LocalDate end1 = period.getEnd().isBefore(budget.getMonth().atEndOfMonth()) ? period.getEnd() : budget.getMonth().atEndOfMonth();
-            LocalDate start1 = period.getStart().isAfter(budget.getMonth().atDay(1)) ? period.getStart() : budget.getMonth().atDay(1);
-            int dayCount = new Period(start1, end1).getDayCount();
+            int dayCount = getOverlappingDayCount(period, new Period(budget.getMonth().atDay(1), budget.getMonth().atEndOfMonth()));
             total += dayCount * budget.getAmount() / budget.getMonth().lengthOfMonth();
         }
         return total;
+    }
+
+    private int getOverlappingDayCount(Period period, Period another) {
+        LocalDate start = period.getStart().isAfter(another.getStart()) ? period.getStart() : another.getStart();
+        LocalDate end = period.getEnd().isBefore(another.getEnd()) ? period.getEnd() : another.getEnd();
+        return new Period(start, end).getDayCount();
     }
 
     private List<Budget> getTargetBudgets(LocalDate start, LocalDate end) {
