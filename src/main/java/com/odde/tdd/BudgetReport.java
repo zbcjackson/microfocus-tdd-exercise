@@ -14,8 +14,7 @@ public class BudgetReport {
 
     public long totalBudget(LocalDate start, LocalDate end)
     {
-        List<Budget> budgets = repo.findAll();
-        List<Budget> budgetList = getTargetBudgets(start, end, budgets);
+        List<Budget> budgetList = getTargetBudgets(start, end);
         long total = 0;
         for (Budget budget: budgetList){
             if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1)) && budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))) {
@@ -30,9 +29,9 @@ public class BudgetReport {
         }
         return total;
     }
-    private List<Budget> getTargetBudgets(LocalDate start, LocalDate end, List<Budget> budgets) {
+    private List<Budget> getTargetBudgets(LocalDate start, LocalDate end) {
         List<Budget> budgetList = new ArrayList<>();
-        for (Budget budget: budgets){
+        for (Budget budget: repo.findAll()){
             if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1))
                     || budget.getMonth().atDay(1).isAfter(start.withDayOfMonth(1))
                     && budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))
