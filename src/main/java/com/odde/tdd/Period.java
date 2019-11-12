@@ -22,4 +22,10 @@ public class Period {
     int getDayCount() {
         return start.isAfter(end) ? 0 : end.getDayOfMonth() - start.getDayOfMonth() + 1;
     }
+
+    int getOverlappingDayCount(Period another) {
+        LocalDate startOfOverlapping = start.isAfter(another.start) ? start : another.start;
+        LocalDate endOfOverlapping = end.isBefore(another.end) ? end : another.end;
+        return new Period(startOfOverlapping, endOfOverlapping).getDayCount();
+    }
 }
