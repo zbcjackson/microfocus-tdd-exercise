@@ -19,11 +19,12 @@ public class BudgetReport {
         for (Budget budget: budgetList){
             LocalDate end1 = period.getEnd().isBefore(budget.getMonth().atEndOfMonth()) ? period.getEnd() : budget.getMonth().atEndOfMonth();
             LocalDate start1 = period.getStart().isAfter(budget.getMonth().atDay(1)) ? period.getStart() : budget.getMonth().atDay(1);
-            int dayCount = start1.isAfter(end1) ? 0 : end1.getDayOfMonth() - start1.getDayOfMonth() + 1;
+            int dayCount = new Period(start1, end1).getDayCount();
             total += dayCount * budget.getAmount() / budget.getMonth().lengthOfMonth();
         }
         return total;
     }
+
     private List<Budget> getTargetBudgets(LocalDate start, LocalDate end) {
         List<Budget> budgetList = new ArrayList<>();
         for (Budget budget: repo.findAll()){

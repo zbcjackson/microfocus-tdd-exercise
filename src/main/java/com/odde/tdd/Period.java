@@ -18,4 +18,8 @@ public class Period {
     public LocalDate getEnd() {
         return end;
     }
+
+    int getDayCount() {
+        return start.isAfter(end) ? 0 : end.getDayOfMonth() - start.getDayOfMonth() + 1;
+    }
 }
