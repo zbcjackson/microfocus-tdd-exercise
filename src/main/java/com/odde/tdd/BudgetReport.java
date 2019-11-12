@@ -12,27 +12,14 @@ public class BudgetReport {
         this.repo = repo;
     }
 
-    public long totalBudget(LocalDate start, LocalDate end)
+    public long totalBudget(Period period)
     {
-        List<Budget> budgetList = getTargetBudgets(start, end);
+        List<Budget> budgetList = getTargetBudgets(period.getStart(), period.getEnd());
         long total = 0;
         for (Budget budget: budgetList){
-            LocalDate start1 = LocalDate.now();
-            LocalDate end1 = LocalDate.now().minusDays(1);
-            if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1)) && budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))) {
-                end1 = end;
-                start1 = start;
-            }else if (budget.getMonth().atDay(1).isEqual(start.withDayOfMonth(1))){
-                end1 = budget.getMonth().atEndOfMonth();
-                start1 = start;
-            }else if (budget.getMonth().atDay(1).isEqual(end.withDayOfMonth(1))){
-                start1 = budget.getMonth().atDay(1);
-                end1 = end;
-            }else if (budget.getMonth().atDay(1).isAfter(start.withDayOfMonth(1)) && budget.getMonth().atDay(1).isBefore(end.withDayOfMonth(1))) {
-                end1 = budget.getMonth().atEndOfMonth();
-                start1 = budget.getMonth().atDay(1);
-            }
-            int dayCount = end1.getDayOfMonth() - start1.getDayOfMonth() + 1;
+            LocalDate end1 = period.getEnd().isBefore(budget.getMonth().atEndOfMonth()) ? period.getEnd() : budget.getMonth().atEndOfMonth();
+            LocalDate start1 = period.getStart().isAfter(budget.getMonth().atDay(1)) ? period.getStart() : budget.getMonth().atDay(1);
+            int dayCount = start1.isAfter(end1) ? 0 : end1.getDayOfMonth() - start1.getDayOfMonth() + 1;
             total += dayCount * budget.getAmount() / budget.getMonth().lengthOfMonth();
         }
         return total;
