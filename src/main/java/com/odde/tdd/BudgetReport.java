@@ -17,7 +17,7 @@ public class BudgetReport {
         List<Budget> budgetList = getTargetBudgets(period.getStart(), period.getEnd());
         long total = 0;
         for (Budget budget: budgetList){
-            int dayCount = period.getOverlappingDayCount(new Period(budget.getMonth().atDay(1), budget.getMonth().atEndOfMonth()));
+            int dayCount = period.getOverlappingDayCount(budget.getPeriod());
             total += dayCount * budget.getAmount() / budget.getMonth().lengthOfMonth();
         }
         return total;

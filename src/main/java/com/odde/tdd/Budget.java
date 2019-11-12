@@ -16,4 +16,8 @@ public class Budget {
     public long getAmount(){
         return amount;
     }
+
+    Period getPeriod() {
+        return new Period(month.atDay(1), month.atEndOfMonth());
+    }
 }
